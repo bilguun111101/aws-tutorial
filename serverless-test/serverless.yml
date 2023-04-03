@@ -1,0 +1,58 @@
+service: serverless-test
+frameworkVersion: '3'
+
+provider:
+  name: aws
+  runtime: nodejs18.x
+  iam:
+    role:
+      statements:
+        # - Effect: "Allow"
+        #   Resource: "*"
+        #   Action: "lambda:InvokeFunction"
+        - Effect: "Allow"
+          Action: 
+            - 'logs:FilterLogEvents'
+            - 'logs:DescribeLogStreams'
+          Resource: '*'
+        - Effect: Allow
+          Action:
+            - 'dynamodb:*'
+          Resource: '*'
+
+functions:
+  # add-function:
+    # handler: index.api
+  # serverless-test-dev-function2:
+    # handler: index.handler
+
+  # add-function:
+    # handler: handler.dynomadb
+  # get-function:
+    # handler: handler.handler
+    # handler: users.handler
+  # add-function:
+  #   handler: register.register
+  # secondFunction:
+  #   handler: register.send
+  #   events:
+  #     - stream:
+  #         type: dynamodb
+  #         arn: 
+  #         batchSize: 10
+  #         startingPosition: LATEST
+  function1:
+    handler: gateway.handler
+    events:
+      - http:
+          path: /gifphy
+          method: post
+          cors: true
+
+  function2:
+    handler: gateway.get
+    events:
+      - http: 
+          path: /gifphy
+          method: get
+          cors: true
